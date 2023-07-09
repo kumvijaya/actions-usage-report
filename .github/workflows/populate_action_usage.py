@@ -64,12 +64,12 @@ def get(url, headers=None):
     return reponse_json
 
 def get_usage_info_url():
-    type_info = ''
+    account_path = ''
     if org_name:
-        type_info = f'/orgs/{org_name}'
+        account_path = f'orgs/{org_name}'
     if user_name:
-        type_info = f'/users/{user_name}'
-    return f'https://api.github.com/{type_info}/settings/billing/actions'
+        account_path = f'users/{user_name}'
+    return f'https://api.github.com/{account_path}/settings/billing/actions'
 
 def set_output(name, value):
     """Sets github action output
