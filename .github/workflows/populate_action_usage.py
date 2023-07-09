@@ -47,7 +47,7 @@ def get_auth_header(access_token):
     Returns:
         dict: header
     """
-    return {"Authorization": f"{access_token}"}
+    return {"Authorization": f"token {access_token}"}
 
 def get(url, headers=None):
     """Process get request
