@@ -8,8 +8,8 @@ parser = argparse.ArgumentParser(
     description="""
         Gets the actions usage
         Usage:
-            python get_actions_usage.py --org 'my-org'
-            python get_actions_usage.py --user 'my-user'
+            python populate_action_usage.py --org 'my-org'
+            python populate_action_usage.py --user 'my-user'
 
     """
 )
@@ -36,7 +36,7 @@ if not org_name and not user_name:
         f"Either org or user to be provided as input"
     )
 
-github_access_token = os.environ['GH_USER_TOKEN']
+github_access_token = os.environ['GH_TOKEN']
 
 def get(url, headers=None):
     """Process get request
