@@ -38,6 +38,17 @@ if not org_name and not user_name:
 
 github_access_token = os.environ['GH_TOKEN']
 
+def get_auth_header(access_token):
+    """Gets the auth header
+
+    Args:
+        access_token (str): access token
+
+    Returns:
+        dict: header
+    """
+    return {"Authorization": f"{access_token}"}
+
 def get(url, headers=None):
     """Process get request
 
@@ -49,8 +60,8 @@ def get(url, headers=None):
         dict: response json
     """
     session = requests.session()
-    if headers:
-        session.headers.update(headers)
+    headers = get_auth_header(github_access_token)
+    session.headers.update(headers)
     response = session.get(url)
     reponse_json = None
     if response.status_code not in [200]:
