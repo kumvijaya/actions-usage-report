@@ -108,8 +108,12 @@ def populate_usage_info():
     """
     url = get_usage_info_url()
     response = get(url)
-    set_output('TOTAL_MINUTES_USED', response["total_minutes_used"])
+    total_minutes_used = response["total_minutes_used"]
+    included_minutes = response["included_minutes"]
+    usage_percentage = (total_minutes_used / included_minutes) * 100
+    set_output('TOTAL_MINUTES_USED', total_minutes_used)
     # set_output('TOTAL_PAID_MINUTES_USED', response["total_paid_minutes_used"])
-    set_output('INCLUDED_MINUTES', response["included_minutes"])
+    set_output('INCLUDED_MINUTES', included_minutes)
+    set_output('USAGE_PERCENTAGE', usage_percentage)
     
 populate_usage_info()
