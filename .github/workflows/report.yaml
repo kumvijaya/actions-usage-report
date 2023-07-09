@@ -23,7 +23,7 @@ jobs:
       - name: Populate actions usage info
         id: usage
         run: |
-          python .github/workflows/get_actions_usage.py --user kumvijaya
+          python .github/workflows/populate_action_usage.py --user kumvijaya
 
       - name: Print actions usage info
         run: |
