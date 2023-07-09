@@ -1,0 +1,31 @@
+name: Actions Usage Report
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/**
+
+jobs:
+  actions-usage-report:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+      
+      - name: Install Python Dependencies
+        run: pip install -r .github/workflows/requirements.txt
+
+      - name: Populate actions usage info
+        id: usage
+        run: |
+          python .github/workflows/get_actions_usage.py --user kumvijaya
+
+      - name: Print actions usage info
+        run: |
+          echo "TOTAL_MINUTES_USED ${{ steps.usage.outputs.TOTAL_MINUTES_USED }}"
+          echo "INCLUDED_MINUTES ${{ steps.usage.outputs.INCLUDED_MINUTES }}"
