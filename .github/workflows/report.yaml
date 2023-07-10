@@ -1,9 +1,8 @@
 name: Actions Usage Report
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - release/**
+  schedule:
+    - cron: '01 20 * * 1-5'
 
 jobs:
   actions-usage-report:
@@ -20,13 +19,12 @@ jobs:
           python-version: '3.11' 
       
       - name: Install Python Dependencies
-        run: pip install -r .github/workflows/requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Populate actions usage info
         id: usage
         run: |
-          python .github/workflows/populate_action_usage.py --user kumvijaya
-
+          python populate_action_usage.py --user ${{ github.repository_owner }}
       - name: Print actions usage info
         run: |
           echo "TOTAL_MINUTES_USED ${{ steps.usage.outputs.TOTAL_MINUTES_USED }}"
@@ -38,15 +36,16 @@ jobs:
         run: |
           echo "Sending Notification as USAGE_PERCENTAGE (${{ steps.usage.outputs.USAGE_PERCENTAGE }}) is above 70"
           
-      # - name: Post to a Slack channel
-      #   id: slack
-      #   uses: slackapi/slack-github-action@v1.24.0
-      #   with:
-      #     # Slack channel id, channel name, or user id to post message.
-      #     # See also: https://api.slack.com/methods/chat.postMessage#channels
-      #     # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-      #     channel-id: 'CHANNEL_ID,ANOTHER_CHANNEL_ID'
-      #     # For posting a simple plain text message
-      #     slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Post to a Slack channel
+        if: ${{ steps.usage.outputs.USAGE_PERCENTAGE }} > 70
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          # Slack channel id, channel name, or user id to post message.
+          # See also: https://api.slack.com/methods/chat.postMessage#channels
+          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+          channel-id: 'C05G630A77U'
+          # For posting a simple plain text message
+          slack-message: "Sending Notification as USAGE_PERCENTAGE (${{ steps.usage.outputs.USAGE_PERCENTAGE }}) is above 70"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
