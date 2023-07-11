@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser(
     description="""
-        Gets the actions usage
+        Gets the actions usage info and populates to Github Output
         Usage:
             python populate_action_usage.py --org 'my-org'
             python populate_action_usage.py --user 'my-user'
@@ -18,14 +18,14 @@ parser.add_argument(
     "-o",
     "--org",
     required=False,
-    help="The org name to check for, ex: 'my-org'",
+    help="The github org name to check for, ex: 'my-org'",
 )
 
 parser.add_argument(
     "-u",
     "--user",
     required=False,
-    help="The user to check for, ex: 'my-user'",
+    help="The github user to check for, ex: 'my-user'",
 )
 
 args = parser.parse_args()
@@ -75,6 +75,11 @@ def get(url, headers=None):
     return reponse_json
 
 def get_usage_info_url():
+    """Gets actions minutes usage info API Url
+
+    Returns:
+        str: GitHub API url
+    """
     account_path = ''
     if org_name:
         account_path = f'orgs/{org_name}'
@@ -92,17 +97,6 @@ def set_output(name, value):
     with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
         print(f"{name}={value}", file=fh)
 
-def set_env(name, value):
-    """Sets github action env var
-
-    Args:
-        name (str): key
-        value (str): value
-    """
-    env_file = os.getenv("GITHUB_ENV")
-    with open(env_file, "a") as file:
-        file.write(f"{name}={value}")
-
 def populate_usage_info():
     """Populates usage info
     """
@@ -110,10 +104,13 @@ def populate_usage_info():
     response = get(url)
     total_minutes_used = response["total_minutes_used"]
     included_minutes = response["included_minutes"]
+    total_paid_minutes_used = response["total_paid_minutes_used"]
     total_minutes_used = 1500.00
-    usage_percentage = (total_minutes_used / included_minutes) * 100
+    usage_percentage = 0
+    if included_minutes > 0:
+        usage_percentage = (total_minutes_used / included_minutes) * 100
     set_output('TOTAL_MINUTES_USED', total_minutes_used)
-    # set_output('TOTAL_PAID_MINUTES_USED', response["total_paid_minutes_used"])
+    set_output('TOTAL_PAID_MINUTES_USED', total_paid_minutes_used)
     set_output('INCLUDED_MINUTES', included_minutes)
     set_output('USAGE_PERCENTAGE', usage_percentage)
     
