@@ -2,8 +2,9 @@ name: Actions Minutes Usage Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *' # 4PM UTC (11AM CST) Every day
+    # - cron: '0 16 * * *' # 4PM UTC (11AM CST) Every day
     # - cron: '0 16 * * 1-5' # 4PM UTC (11AM CST) Only week days
+    - cron: '*/5 * * * *' # Every 5 mins
 
 jobs:
   actions-minutes-usage-check:
@@ -43,6 +44,6 @@ jobs:
           # Slack channel id, channel name, or user id to post message (https://api.slack.com/methods/chat.postMessage#channels)
           # Can pass multiple channels to post to by providing a comma-delimited list of channel IDs.
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-          slack-message: ":warning: GitHub Org (${{ github.repository_owner }}) Actions Minutes Usage is *${{ steps.usage.outputs.USAGE_PERCENTAGE }}%*.\nIncluded Minutes: *${{ steps.usage.outputs.INCLUDED_MINUTES }}*\nTotal Minutes Used: *${{ steps.usage.outputs.TOTAL_MINUTES_USED }}*\nTotal Paid Minutes Used: ${{ steps.usage.outputs.TOTAL_PAID_MINUTES_USED }}"
+          slack-message: ":warning: GitHub Org (_${{ github.repository_owner }}_) Actions Minutes Usage is *${{ steps.usage.outputs.USAGE_PERCENTAGE }}%*.\nIncluded Minutes: *${{ steps.usage.outputs.INCLUDED_MINUTES }}*\nTotal Minutes Used: *${{ steps.usage.outputs.TOTAL_MINUTES_USED }}*\nTotal Paid Minutes Used: ${{ steps.usage.outputs.TOTAL_PAID_MINUTES_USED }}"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
