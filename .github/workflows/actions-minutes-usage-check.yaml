@@ -43,6 +43,6 @@ jobs:
           # Slack channel id, channel name, or user id to post message (https://api.slack.com/methods/chat.postMessage#channels)
           # Can pass multiple channels to post to by providing a comma-delimited list of channel IDs.
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-          slack-message: ":warning: *GitHub Alert*\nGitHub Org (${{ github.repository_owner }}) Actions Minutes Usage is <span style=\"color:red\">*${{ steps.usage.outputs.USAGE_PERCENTAGE }}%*</span>.\nIncluded Minutes: *${{ steps.usage.outputs.INCLUDED_MINUTES }}*\nTotal minutes used: *${{ steps.usage.outputs.TOTAL_MINUTES_USED }}*\nTotal paid minutes used: ${{ steps.usage.outputs.TOTAL_PAID_MINUTES_USED }}"
+          slack-message: ":warning: GitHub Org (${{ github.repository_owner }}) Actions Minutes Usage is *${{ steps.usage.outputs.USAGE_PERCENTAGE }}%*.\nIncluded Minutes: *${{ steps.usage.outputs.INCLUDED_MINUTES }}*\nTotal Minutes Used: *${{ steps.usage.outputs.TOTAL_MINUTES_USED }}*\nTotal Paid Minutes Used: ${{ steps.usage.outputs.TOTAL_PAID_MINUTES_USED }}"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
