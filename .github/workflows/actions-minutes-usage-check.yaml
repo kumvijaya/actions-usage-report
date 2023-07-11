@@ -4,7 +4,7 @@ on:
   schedule:
     # - cron: '0 16 * * *' # 4PM UTC (11AM CST) Every day
     # - cron: '0 16 * * 1-5' # 4PM UTC (11AM CST) Only week days
-    - cron: '*/5 * * * *' # Every 5 mins
+    - cron: '*/15 * * * *' # Every 15 mins
 
 jobs:
   actions-minutes-usage-check:
