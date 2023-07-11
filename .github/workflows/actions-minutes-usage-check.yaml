@@ -26,7 +26,7 @@ jobs:
       - name: Populate actions usage info
         id: usage
         run: |
-          python populate_action_usage.py --user ${{ github.repository_owner }}
+          python populate_action_usage.py
           
       - name: Print actions usage info
         run: |
@@ -42,6 +42,6 @@ jobs:
           # Slack channel id, channel name, or user id to post message (https://api.slack.com/methods/chat.postMessage#channels)
           # Can pass multiple channels to post to by providing a comma-delimited list of channel IDs.
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
-          slack-message: ":exclamation: GitHub Alert\nYour GitHub Org (*${{ github.repository_owner }}*) Actions Minutes Usage is **${{ steps.usage.outputs.USAGE_PERCENTAGE }} %**."
+          slack-message: ":exclamation: *GitHub Alert*\nYour GitHub Org (${{ github.repository_owner }}) Actions Minutes Usage is **${{ steps.usage.outputs.USAGE_PERCENTAGE }} %**."
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
