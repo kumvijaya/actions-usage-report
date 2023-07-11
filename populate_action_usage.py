@@ -50,8 +50,8 @@ def get_owner_type():
     """Gets the github repo owner type"""
     org_repo_name = os.environ["GITHUB_REPOSITORY"]
     url = f"https://api.github.com/repos/{org_repo_name}"
-    repo_info_response = get(url)
-    return repo_info_response["owner"]["type"]
+    response = get(url)
+    return response["owner"]["type"]
 
 
 def get_actions_billing_url():
